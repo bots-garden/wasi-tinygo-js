@@ -1,1 +1,1 @@
-# wasi-tinygo-js
+# WASI TinyGo JS

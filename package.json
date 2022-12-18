@@ -1,0 +1,26 @@
+{
+  "name": "wasi-tinygo-js",
+  "version": "0.0.0",
+  "description": "Node.js helper for the WASI specification and TinyGo",
+  "main": "./src/main.mjs",
+  "exports": {
+    ".": "./src/main.mjs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bots-garden/wasi-tinygo-js.git"
+  },
+  "keywords": [
+    "wasi",
+    "tinygo"
+  ],
+  "author": "k33g",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bots-garden/wasi-tinygo-js/issues"
+  },
+  "homepage": "https://github.com/bots-garden/wasi-tinygo-js#readme"
+}
