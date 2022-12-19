@@ -55,7 +55,6 @@ class BufferResult {
    */
   toString() {
     return new TextDecoder("utf8").decode(this.buffer)
-
   }
 
   /**
