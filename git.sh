@@ -257,7 +257,7 @@ case $1 in
     ;;
 
   # 💬: speech-balloon
-  speech_balloon)
+  speech_balloon|update-text)
     message="Add or update text and literals"
     emoji="💬"
     ;;

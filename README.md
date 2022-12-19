@@ -9,7 +9,7 @@ Build [TinyGo](https://tinygo.org/) functions for [Node.js](https://nodejs.org/)
 
 ### Node.js
 ```bash
-npm install wasi-tinygo-js@0.0.0
+npm install wasi-tinygo-js@0.0.1
 ```
 
 ### Go
