@@ -1,21 +1,21 @@
 # WASI TinyGo JS Helpers
 
-Build [TinyGo]() functions for [Node.js]() thanks to WebAssembly and the Node.js [WASI]() support.
+Build [TinyGo](https://tinygo.org/) functions for [Node.js](https://nodejs.org/) thanks to [WebAssembly](https://webassembly.org/) and the Node.js [WASI](https://wasi.dev/) support.
 
-> - `wasi-tinygo-js` is both a npm package and a Golang library.
-> - Why TinyGo? It's the only Go compiler that can build WASI compliant wasm modules
+- `wasi-tinygo-js` is both a npm package and a Golang library.
+- Why TinyGo? It's the only Go compiler that can build WASI compliant wasm modules
 
 ## Install
 
-> Node.js
+### Node.js
 ```bash
 npm install wasi-tinygo-js@0.0.0
 ```
 
-> Go
+### Go
 ```go
 import (
-"github.com/bots-garden/wasi-tinygo-js/wasihelpers"
+  "github.com/bots-garden/wasi-tinygo-js/wasihelpers"
 )
 ```
 
@@ -39,7 +39,7 @@ func Handler(param []byte) ([]byte, error) {
 }
 ```
 
-> Build
+**Build**:
 ```bash
 tinygo build -o hello.wasm -target wasi ./hello.go
 ```
@@ -68,20 +68,62 @@ import {WasmHelper, WasmModule} from 'wasi-tinygo-js'
 
 })()
 ```
-> You can call the Go handler with 3 types:
-> - Bytes: `wasmModule.callHandlerWithBytes(new TextEncoder("utf8").encode("John Doe"))`
-> - String: `wasmModule.callHandlerWithString("John Doe")`
-> - JSON: `wasmModule.callHandlerWithJson({firstName: "John", lastName: "Doe"})`
->
-> The 3 `callHandler` methods return a `BufferResult` type:
-> ```mermaid
-> classDiagram
->   class BufferResult {
->     +Uint8Array buffer
->     +boolean isError
->     +BufferResult constructor(Uint8Array, boolean)
->     +string toString()
->     +object toJson()
->   }
-> ```
+You can call the Go handler with 3 types:
+
+- Bytes: `wasmModule.callHandlerWithBytes(new TextEncoder("utf8").encode("John Doe"))`
+- String: `wasmModule.callHandlerWithString("John Doe")`
+- JSON: `wasmModule.callHandlerWithJson({firstName: "John", lastName: "Doe"})`
+
+The 3 `callHandler` methods return a `BufferResult` type:
+
+```mermaid
+classDiagram
+  class BufferResult {
+    +Uint8Array buffer
+    +boolean isError
+    +BufferResult constructor(Uint8Array, boolean)
+    +string toString()
+    +object toJson()
+  }
+```
+
+👀 Have a look to the `/samples` directory
+
+## Call the TinyGo Wasm function with WasmEdge, Wasmtime or Wasmer
+
+If you want to execute the TinyGo wasm module with a WebAssembly Runtime, it's simple, update the `main` function like this:
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/bots-garden/wasi-tinygo-js/wasihelpers"
+	"os"
+	"path/filepath"
+)
+
+func main() {
+	if filepath.Ext(os.Args[0]) == ".wasm" {
+		value, _ := Handler([]byte(os.Args[1]))
+		fmt.Println(string(value))
+	} else {
+		wasihelpers.SetHandler(Handler)
+	}
+}
+
+func Handler(param []byte) ([]byte, error) {
+
+	message := "👋 Hello World 🌎" + string(param)
+	return []byte(message), nil
+}
+```
+
+And now, you can run it like this:
+
+```bash
+wasmer wasm/hello.wasm "Jane"
+wasmtime wasm/hello.wasm "Jane"
+wasmedge wasm/hello.wasm "Jane"
+```
 
