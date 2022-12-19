@@ -89,7 +89,7 @@ case $1 in
     ;;
 
   # 🔖: bookmark
-  bookmark)
+  bookmark|release)
     message="Release / Version tags"
     emoji="🔖"
     ;;
