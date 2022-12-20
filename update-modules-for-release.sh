@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TAG="v0.0.1"
+TAG="v0.0.2"
 echo "👋 change version number in package.json"
 cd wasihelpers
 go mod edit -replace github.com/bots-garden/wasi-tinygo-js@${TAG}=../

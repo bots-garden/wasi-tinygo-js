@@ -9,7 +9,7 @@ Build [TinyGo](https://tinygo.org/) functions for [Node.js](https://nodejs.org/)
 
 ### Node.js
 ```bash
-npm install wasi-tinygo-js@0.0.1
+npm install wasi-tinygo-js@0.0.2
 ```
 
 ### Go
@@ -127,3 +127,8 @@ wasmtime wasm/hello.wasm "Jane"
 wasmedge wasm/hello.wasm "Jane"
 ```
 
+## Files
+
+> This is subject to change
+
+👀 Have a look to the `/samples/hello-world-text` directory

@@ -1,15 +1,30 @@
-const wasi_tinygo_js = "0.0.0"
+const wasi_tinygo_js = "0.0.2"
 
-import {WASI} from 'wasi'
-import fs from 'node:fs'
+import {WASI} from "node:wasi"
+import fs from "node:fs"
 
-import process from 'node:process'
+import process from "node:process"
 
+/**
+ * The WASI object instance (see https://nodejs.org/api/wasi.html).
+ * @typedef Wasi
+ * @type {Object}
+ * @property {Array} args - array of arguments.
+ * @property {Object} env - environment variables.
+ * @property {Object} preopens - WebAssembly application's sandbox directory structure.
+ */
+
+/** @type {Wasi} */
 const wasi = new WASI({
-  args: process.argv, env: process.env
-});
-const importObject = { wasi_snapshot_preview1: wasi.wasiImport };
-const MASK = (2n**32n)-1n;
+  args: process.argv,
+  env: process.env,
+  preopens: {
+    '/sandbox': './' // This is subject to change
+  }
+})
+
+const importObject = { wasi_snapshot_preview1: wasi.wasiImport }
+const MASK = (2n**32n)-1n
 
 export function version() {
   return wasi_tinygo_js
@@ -29,6 +44,7 @@ export class WasmHelper {
   }
 }
 
+/** Class representing a BufferResult. */
 class BufferResult {
   /**
    * @member {Uint8Array}
@@ -67,7 +83,7 @@ class BufferResult {
 }
 
 
-
+/** Class representing a WasmModule. */
 export class WasmModule {
   /**
    * @member {Module}
@@ -83,9 +99,7 @@ export class WasmModule {
    * @param {Module} wasm - The compiled wasm module.
    */
   constructor(wasm) {
-    //super(props);
     this.wasmModule = wasm
-
   }
 
   /**
@@ -128,6 +142,9 @@ export class WasmModule {
 
   /**
    * Call the `callHandler` TinyGo exported function.
+   * if extractedBuffer[0] byte === 69 it's an error returned by TinyGo
+   * if extractedBuffer[0] byte === 82 it's a value returned by TinyGo
+   *
    * @param {Uint8Array} bytes - The bytes array payload.
    * @return {BufferResult} result - The bytes array result (and isError).
    * {Uint8Array} result.buffer
